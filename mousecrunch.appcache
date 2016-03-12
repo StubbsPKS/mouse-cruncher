@@ -1,0 +1,9 @@
+CACHE MANIFEST
+# 2015-02-18:v32
+
+# Explicitly cached 'master entries'.
+CACHE:
+index.html
+style.css
+js/filth.js
+js/setup.js

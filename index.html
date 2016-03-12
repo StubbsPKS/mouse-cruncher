@@ -1,0 +1,136 @@
+<!doctype html>
+<html manifest="mousecrunch.appcache">
+	<head>
+		<meta charset="utf-8">
+		<title>Mouse Burner</title>
+		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+		<script type="text/javascript">
+		// Check if a new cache is available on page load.
+		window.addEventListener('load', function(e) {
+			window.applicationCache.addEventListener('updateready', function(e) {
+				if(window.applicationCache.status == window.applicationCache.UPDATEREADY){
+					window.applicationCache.swapCache();
+					window.location.reload();
+					console.log("appcache updated");
+				}
+			}, false);
+		}, false);
+		</script>
+		<script src="js/filth.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div id="questions">
+			<h2>Mouse Cruncher</h2>
+			<ul>
+				<li>
+					<p>This multiple-choice quiz takes you through the Recruitment section starting on p299 of Mouse Guard 2nd Edition. It will build a list of stats at the bottom of the page as you complete it. You can then copy that to your character sheet and fill out the remaining wordy bits.</p>
+					<a href="javascript:Player.save();Player.current.nextQuestion();">Begin the quiz.</a>
+					<br /><br/>
+					<a href="javascript:Player.save();Player.current.randomise();">Or randomise.</a>
+			  </li>
+				<li>
+					<h3>What is your Guard Rank?</h3>
+					<h4>Restrictions:</h4>
+					No more than one Guard Captain per group - this rank can only be played by consent of the group because you would be a major character in Mouse Guard.<br /><br />
+					No more than one Patrol Leader per group - the group doesn't need one to play a game, but it is nice to have one. Consult the group if you want to be a Patrol Leader.<br /><br />
+					You should only play Tenderpaw if you have played Mouse Guard before. You'll need a good grasp of the rules to make the most of it.
+					<p>
+				</li>
+				<li>
+					<h3>Where were you born?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What skill did you learn there?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What trait did you inherit there?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What is your natural talent?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What is your parent's trade?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>How do you convince people?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What was your senior artisan?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What did your mentor stress in training?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What is your Speciality?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>Nature: Do you save for later?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>Nature: What trait do you gain by not saving for later?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>Nature: Do you stand your ground?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>Nature: Do you fear owls, weasels, and wolves?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>Nature: What trait do you gain for being brave?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What are you wise about?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>What are you wise about?</h3>
+					<p>
+				</li>
+				<li>
+					<h3>Choose a trait you were born with</h3>
+					<p>
+				</li>
+				<li>
+					<h3>Choose a trait you learned from your parents</h3>
+					<p>
+				</li>
+				<li>
+					<h3>Choose a trait from life on the road</h3>
+					<p>
+				</li>
+				<li>
+					<h3>All Done!</h3>
+					Your character stats are completed below. Transfer these to a character sheet to allow them to change during play. You've still yet to define your mouse's personality (cloak, fur color, belief, instinct) and choose some names (p310).</p>
+					<p>You get one Fate point and one Persona point.</p>
+					<p><a href="javascript:Player.current.stepBack();">Back</a></p>
+					<p><a href="javascript:Player.current.startOver();">Start Over</a></p>
+					<p><a href="javascript:Player.current.printChar();">Print</a></p>
+				</li>
+			</ul>
+			<hr />
+		</div>
+		<div id="result">
+		<script src="js/setup.js"></script>
+		<script>
+			Player.init();
+			Player.current.render();
+		</script>
+		
+		
+	</body>
+</html>
