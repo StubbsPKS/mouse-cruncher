@@ -421,7 +421,7 @@ Player.prototype.selectAnswer = function(n, auto){
 				case 0: // Tenderpaw
 					this.Age = "14-17";
 					this.Cloak = "None";
-					this.Will = 3;
+					this.Will = 2;
 					this.Health = 6;
 					this.Skills = {
 						Pathfinder:2,
