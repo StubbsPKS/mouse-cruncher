@@ -62,6 +62,9 @@ var Player = function(question, questions){
 	this.saveForWinter = false;
 	this.fearWeasels = false;
 	this.wiseChoices = 0;
+	this.naturalChoices = 0;
+	this.convinceChoices = 0;
+	this.mentorChoices = 0;
 	this.answers = 0;
 }
 	
@@ -272,7 +275,6 @@ Player.prototype.nextQuestion = function(){
 	switch(this.question){
 		case 1: // Rank
 			str = this.answerList(ranks, undefined, undefined, true);
-			
 			break;
 		case 2: // Home
 			str = this.answerList(this.keyArray(homes));
@@ -291,19 +293,50 @@ Player.prototype.nextQuestion = function(){
 			if(list.length == 1) answer = 0;
 			break;
 		case 5: // Natural Talent
-			str = this.answerList(skills);
+			if (this.naturalChoices == 0) {
+				skip = true;
+				break;
+			}
+
+			if (this.naturalChoices > 1) {
+				str = "Choices remaining: " + this.naturalChoices + "<br /><br />";
+			} else {
+				str = "";
+			}
+			str += this.answerList(skills,'', this.Skills)
 			break;
 		case 6: // Parent's Trade
 			str = this.answerList(parentSkills);
 			break;
 		case 7: // Convince People
-			str = this.answerList(conviceSkills);
+			if (this.convinceChoices == 0) {
+				skip = true;
+				break;
+			}
+
+			if (this.convinceChoices > 1) {
+				str = "Choices remaining: " + this.convinceChoices + "<br /><br />";
+			} else {
+				str = "";
+			}
+			str += this.answerList(conviceSkills,'',this.conviceSkills);
 			break;
 		case 8: // Senior Artisan
 			str = this.answerList(seniorArtisanSkills);
 			break;
 		case 9: // Mentor
-			str = this.answerList(mentorSkills);
+			if (this.mentorChoices == 0) {
+				skip = true;
+				break;
+			}
+
+			if (this.mentorChoices > 1) {
+				str = "Choices remaining: " + this.mentorChoices + "<br /><br />";
+			} else {
+				str = "";
+			}
+			
+			str += this.answerList(mentorSkills, '', this.mentorSkills);
 			break;
 		case 10: // Speciality
 			if(this.Rank == "Tenderpaw"){
@@ -370,7 +403,7 @@ Player.prototype.nextQuestion = function(){
 			if(this.Rank == "Guard Captain"){
 				str += this.answerList(guardCaptainTraits);
 			} else if(this.Rank == "Patrol Leader"){
-				str += this.answerList(patrolLeaderTraits);
+				str += this.answerList(guardCaptainTraits);
 			} else {
 				skip = true;
 			}
@@ -430,6 +463,9 @@ Player.prototype.selectAnswer = function(n, auto){
 						Scout: 2,
 						Laborer: 2
 					};
+					this.naturalChoices = 2;
+					this.convinceChoices = 1;
+					this.mentorChoices = 1;
 					this.Circles = 1;
 					this.Resources = 1;
 					break;
@@ -444,6 +480,9 @@ Player.prototype.selectAnswer = function(n, auto){
 						Scout: 2,
 						Survivalist: 2
 					};
+					this.naturalChoices = 1;
+					this.convinceChoices = 1;
+					this.mentorChoices = 1;
 					this.wiseChoices = 1;
 					this.Circles = 2;
 					this.Resources = 2;
@@ -462,6 +501,9 @@ Player.prototype.selectAnswer = function(n, auto){
 						Survivalist: 2,
 						"Weather Watcher": 2
 					};
+					this.naturalChoices = 1;
+					this.convinceChoices = 1;
+					this.mentorChoices = 1;
 					this.wiseChoices = 2;
 					this.Circles = 3;
 					this.Resources = 3;
@@ -481,6 +523,9 @@ Player.prototype.selectAnswer = function(n, auto){
 						Survivalist: 3,
 						"Weather Watcher": 2
 					};
+					this.naturalChoices = 1;
+					this.convinceChoices = 2;
+					this.mentorChoices = 2;
 					this.wiseChoices = 3;
 					this.Circles = 3;
 					this.Resources = 4;
@@ -502,6 +547,9 @@ Player.prototype.selectAnswer = function(n, auto){
 						Survivalist: 3,
 						"Weather Watcher": 3
 					};
+					this.naturalChoices = 2;
+					this.convinceChoices = 2;
+					this.mentorChoices = 1;
 					this.wiseChoices = 3;
 					this.Circles = 4;
 					this.Resources = 5;
@@ -519,6 +567,8 @@ Player.prototype.selectAnswer = function(n, auto){
 			break;
 		case 5: // Natural Talent
 			this.bumpSkill(skills[n]);
+			this.naturalChoices--;
+			if (this.naturalChoices > 0) this.question--;
 			break;
 		case 6: // Parent's Trade
 			this.Parents = "p310 ("+parentSkills[n]+")";
@@ -526,6 +576,8 @@ Player.prototype.selectAnswer = function(n, auto){
 			break;
 		case 7: // Convince People
 			this.bumpSkill(conviceSkills[n]);
+			this.convinceChoices--;
+			if (this.convinceChoices > 0) this.question--;
 			break;
 		case 8: // Senior Artisan
 			this["Senior Artisan"] = "p310 ("+seniorArtisanSkills[n]+")";
@@ -534,6 +586,8 @@ Player.prototype.selectAnswer = function(n, auto){
 		case 9: // Mentor
 			this.Mentor = "p310 ("+mentorSkills[n]+")";
 			this.bumpSkill(mentorSkills[n]);
+			this.mentorChoices--;
+			if (this.mentorChoices > 0) this.question--;
 			break;
 		case 10: // Speciality
 			this.bumpSkill(mentorSkills[n]);
@@ -583,9 +637,15 @@ Player.prototype.selectAnswer = function(n, auto){
 			this.bumpTrait(tenderpawTraits[n]);
 			break;
 		case 20: // Guard Captain Traits
-			this.bumpTrait(guardCaptainTraits[n]);
+			if (this.Rank == "Patrol Leader"){
+				this.bumpTrait(guardCaptainTraits[n]);
+			} else if(this.Rank == "Guard Captain"){
+				this.bumpTrait(guardCaptainTraits[n]);
+			} else {
+				skip = true;
+				break;
+			}
 			break;
-		break;
 	}
 	this.nextQuestion();
 	this.render();
