@@ -369,6 +369,8 @@ Player.prototype.nextQuestion = function(){
 		case 20: // Guard Captain Traits
 			if(this.Rank == "Guard Captain"){
 				str += this.answerList(guardCaptainTraits);
+			} else if(this.Rank == "Patrol Leader"){
+				str += this.answerList(patrolLeaderTraits);
 			} else {
 				skip = true;
 			}
